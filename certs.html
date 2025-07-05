@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Certifications & Courses</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+    }
+
+    header {
+      background-color: #1a1a1a;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #00ffcc;
+    }
+
+    nav {
+      background-color: #111;
+      text-align: center;
+      padding: 10px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #00ffcc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      border-bottom: 2px solid #00ffcc;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      color: #00ffcc;
+    }
+
+    .accordion {
+      background-color: #1b1b1b;
+      border: none;
+      color: #00ffcc;
+      cursor: pointer;
+      padding: 15px;
+      width: 100%;
+      text-align: left;
+      outline: none;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
+      border-left: 4px solid #00ffcc;
+      margin-bottom: 5px;
+      border-radius: 6px;
+    }
+
+    .accordion:hover {
+      background-color: #222;
+    }
+
+    .panel {
+      display: none;
+      overflow: hidden;
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .panel img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #1a1a1a;
+      border-top: 1px solid #333;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Certifications & Courses</h1>
+    <p>Courses I've completed and certifications I've earned</p>
+  </header>
+
+  <nav>
+    <a href="about.html">About Me</a>
+    <a href="index.html">Home</a>
+    <a href="blog.html">CTF Blog</a>
+  </nav>
+
+  <section>
+    <h2>Certifications</h2>
+
+    <button class="accordion">PCEP - Certified Entry-Level Python Programmer</button>
+    <div class="panel">
+      <img src="images/python-cert.jpg" alt="Python PCEP Certification" />
+    </div>
+    
+     <button class="accordion">Docker Foundations Professional Certificate</button>
+    <div class="panel">
+      <p>Certificate provided by Linkedin, Learn Docker for software development, real-world container use, 
+      and advanced deployment with Docker Compose. </p>
+      <img src="images/CertificateOfCompletion_Docker Foundations Professional Certificate.jpg "alt="Docker Certification"/>
+    </div>
+   
+    <button class="accordion">TryHackMe: Cybsecurity 101 (In Progress)</button>
+    <div class="panel">
+      <p>Covered networking, enumeration, and web exploitation basics.</p>
+      <img src="images/thm-cert.jpg" alt="TryHackMe Certificate" />
+    </div>
+     
+    <button class="accordion">Analyze Network Traffic with TCPDump: Build a logging tool</button>
+    <div class="panel">
+      <p>Completed a guided project on using tcpdump to capture and analyze TCP traffic, applying foundational Linux and networking skills.</p>
+      <img src="images/tcpdump-cert.jpg" alt="Coursera Certification" />
+    </div>
+
+    <h2>Courses Completed</h2>
+    <ul>
+      <li>Introduction to HTML (Summer Class)</li>
+      <li>Python for Security (custom Scapy scripting)</li>
+      <li>Wireshark & Packet Analysis Fundamentals</li>
+    </ul>
+  </section>
+
+  <div class="footer">
+      © 2025 All rights reserved.
+  </div>
+
+  <script>
+    const acc = document.querySelectorAll('.accordion');
+    acc.forEach(btn => {
+      btn.addEventListener('click', function () {
+        this.classList.toggle('active');
+        const panel = this.nextElementSibling;
+        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+      });
+    });
+  </script>
+</body>
+</html>
