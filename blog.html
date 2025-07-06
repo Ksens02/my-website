@@ -249,9 +249,35 @@
   <p>Notice line 7, where there is yet another warning about the admin account's vulnerability. At this point, I was also aware that in the URL of the site, 
   there is a "user=guest" field. So, I simply switched this value from "guest", to "admin", and this revealed the flag I was searching for.</p>
   <img src="images/neighbour_flag.JPG" alt="Neighbour Flag" style="max-width:100%; border:1px solid#ccc;">
-
-
   </div>
+
+  <!--Blog Entry 3-->
+  <button class="accordion">MD2PDF -- TryHackMe.com &#9660;</button>
+<div class="panel">
+  <p>
+    In this write-up, I am going to be completing the MD2PDF CTF. The goal is to infiltrate a new file converter tool to find the flag.
+  </p>
+
+  <h4>Step 1: Scan the Target IP Address</h4>
+  <p>The first thing I did was run an nmap scan on the target IP address, which revealed port 80 was open.</p>
+  <img src="images/md2pdf_nmap.JPG" alt="Md2PDF Nmap Scan" style="max-width:100%; border:1px solid#ccc;">
+  <p> Since port 80 is open, I went to my web browser and accessed the converter tool via the target ip address.
+  </p>
+  <img src="images/md2pdf_application.JPG" alt="Application" style="max-width:100%; border:1px solid#ccc;">
+  
+  <h4>Step 2: Find other web pages</h4>
+  <p>Next, I ran a quick gobuster command and found an admin page.</p>
+  <img src="images/md2pdf_dirb.JPG" alt="MD2PDF Dirbuster" style="max-width:100%; border:1px solid#ccc;">
+  <p>Accessing the admin site revealed the following. This is a big hint that shows a potential way in.</p>
+  <img src="images/md2pdf_forbidden.JPG" alt="Forbidden" style="max-width:100%; border:1px solid#ccc;">
+
+  <h4>Step 3: HTML Injection</h4>
+  <p>Going back to the home page, I injected HTML into the PDF converter.</p>
+  <img src="images/md2pdf_html_injection.JPG" alt="MD2PDF HTML injection" style="max-width:100%; border:1px solid#ccc;">
+  <p>This created a popup with the converted pdf that also revealed the flag.</p>
+  <img src="images/mdf2pdf_flag.JPG" alt="Flag" style="max-width:100%; border:1px solid#ccc;">
+  </div>
+
 
 </section>
 
