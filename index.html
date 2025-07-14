@@ -1,145 +1,290 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Keller Sens | Cybersecurity Student</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background-color: #0f0f0f;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2b 50%, #16213e 100%);
       color: #e0e0e0;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
     }
-
     header {
-      background-color: #1a1a1a;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 2px solid #00ffcc;
+      background: rgba(26, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px 20px 20px 20px;
+      border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-
     header h1 {
-      margin: 0;
-      font-size: 2.2em;
+      margin: 0 0 10px 0;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      background: linear-gradient(45deg, #00ffcc, #00d4ff, #00ffcc);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      letter-spacing: 2px;
     }
-
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    header a {
+      text-decoration: none;
+      color: #00ffcc;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 6px;
+      background: rgba(0, 255, 204, 0.08);
+      transition: all 0.3s;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    header a:hover {
+      color: #fff;
+      background: rgba(0, 255, 204, 0.18);
+      box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
+    }
     nav {
-      background-color: #111;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(10px);
       text-align: center;
-      padding: 10px;
+      padding: 15px;
+      margin-bottom: 40px;
+      border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+      position: sticky;
+      top: 90px;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
     }
-
     nav a {
+      margin: 0 20px;
       color: #00ffcc;
       text-decoration: none;
-      margin: 0 15px;
       font-weight: bold;
-      transition: color 0.3s;
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 8px 16px;
+      border-radius: 6px;
     }
-
     nav a:hover {
       color: #ffffff;
+      background: rgba(0, 255, 204, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
     }
-
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #00ffcc;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    nav a:hover::after {
+      width: 80%;
+    }
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 10px 0 10px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
     section {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
+      background: linear-gradient(145deg, rgba(26, 26, 43, 0.8), rgba(22, 33, 62, 0.8));
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 255, 204, 0.08);
+      padding: 40px 30px;
+      margin: 0 auto;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+      opacity: 0;
+      transform: translateY(30px);
     }
-
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
     section h2 {
+      font-size: 2.2rem;
+      margin: 0 0 20px 0;
+      color: #00ffcc;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
       border-bottom: 2px solid #00ffcc;
       padding-bottom: 10px;
-      margin-bottom: 20px;
-      color: #00ffcc;
     }
-
+    section ul {
+      padding-left: 20px;
+    }
+    .button {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #00ffcc, #00d4ff);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 255, 204, 0.3);
+      display: inline-block;
+      margin-top: 18px;
+    }
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    .button:hover::before {
+      left: 100%;
+    }
+    .button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(0, 255, 204, 0.4);
+      background: linear-gradient(45deg, #00d4ff, #00ffcc);
+    }
+    .button:active {
+      transform: translateY(-1px) scale(1.02);
+    }
     .footer {
       text-align: center;
       padding: 20px;
-      background-color: #1a1a1a;
+      background: rgba(26, 26, 43, 0.95);
       border-top: 1px solid #333;
       color: #999;
+      margin-top: 60px;
+      font-size: 1rem;
     }
-
-    a.button {
-      display: inline-block;
-      padding: 10px 15px;
-      margin-top: 10px;
-      background-color: #00ffcc;
-      color: #000;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.3s;
+    @media (max-width: 900px) {
+      .main-content {
+        padding: 10px 0 0 0;
+      }
+      section {
+        padding: 30px 10px;
+      }
     }
-
-    a.button:hover {
-      background-color: #00ccaa;
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      nav a {
+        margin: 0 10px;
+        font-size: 1rem;
+      }
+      .main-content {
+        gap: 20px;
+      }
+      section {
+        padding: 20px 5px;
+      }
+      .button {
+        font-size: 1rem;
+        padding: 10px 18px;
+      }
     }
- 
-    header a {
-      text-decoration: none;
-      color: white;
-      padding: 3px;	    
-    }	  
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 0;
+      }
+      section {
+        padding: 12px 2px;
+      }
+    }
   </style>
 </head>
 <body>
-
 <header>
   <h1>Keller Sens</h1>
   <a href="games.html">Cybersecurity Student | CTF Enthusiast | Future Defender</a>
 </header>
-
 <nav>
   <a href="blog.html">CTF Blog</a>
   <a href="certs.html">Certifications</a>
   <a href="about.html">About Me</a>
 </nav>
-
-<section id="about">
-  <h2>About Me</h2>
-  <p>Hello! I'm a cybersecurity student with a passion for ethical hacking, CTF competitions, and learning how to secure systems from the ground up. I'm currently pursuing my degree and building practical skills in network security, penetration testing, and secure coding. </p>
-  <a href="about.html" class="button">Learn More</a>
-</section>
-
-<section id="projects">
-  <h2>What I'm Working On</h2>
-  <ul>
-    <li>Participating in weekly CTF challenges (TryHackMe)</li>
-    <li>Building a home server for personal use, experimenting with services 
-	like file sharing (Samba), media hosting, running local websites, Docker, a local AI chatbot, and hosting an email server.</li>
-    <li>Learning basic web security concepts through coursework and hands-on 
-	practice</li>
-	  <li>Taking a summer HTML course to improve my front-end development 
-	  skills</li>
-    <li>Created custom packet and port sniffers using Scapy in Python</li>
-	  <li>Built a tcpdump + Wireshark workflow to decrypt HTTPS traffic using 
-	  SSL key logging</li>
-	  <li>Interning on a DevOps Security team, gaining experience with AWS, 
-	  Atlassian tools, and GitLab pipelines</li>
-  </ul>
-</section>
-
-<section id="blog">
-  <h2>CTF Blog & Writeups</h2>
-  <p>I'll be posting write-ups of interesting CTF challenges I've completed. Check back soon for walkthroughs, tips, and lessons learned!</p>
-  <a href="blog.html" class="button">Visit Blog</a>
-</section>
-
-<section class="certifications">
-  <h2>Certifications & Courses</h2>
-  <p>
-    A showcase of certifications I’ve earned and cybersecurity-related courses I’ve completed — covering topics like Linux, packet analysis, cloud, and secure development practices.
-  </p>
-  <a href="certs.html" class="button">View Certifications</a>
-</section>
-
-
+<div class="main-content">
+  <section id="about" class="fade-in">
+    <h2>About Me</h2>
+    <p>Hello! I'm a cybersecurity student with a passion for ethical hacking, CTF competitions, and learning how to secure systems from the ground up. I'm currently pursuing my degree and building practical skills in network security, penetration testing, and secure coding. </p>
+    <a href="about.html" class="button">Learn More</a>
+  </section>
+  <section id="projects" class="fade-in">
+    <h2>What I'm Working On</h2>
+    <ul>
+      <li>Participating in weekly CTF challenges (TryHackMe)</li>
+      <li>Building a home server for personal use, experimenting with services like file sharing (Samba), media hosting, running local websites, Docker, a local AI chatbot, and hosting an email server.</li>
+      <li>Learning basic web security concepts through coursework and hands-on practice</li>
+      <li>Taking a summer HTML course to improve my front-end development skills</li>
+      <li>Created custom packet and port sniffers using Scapy in Python</li>
+      <li>Built a tcpdump + Wireshark workflow to decrypt HTTPS traffic using SSL key logging</li>
+      <li>Interning on a DevOps Security team, gaining experience with AWS, Atlassian tools, and GitLab pipelines</li>
+    </ul>
+  </section>
+  <section id="blog" class="fade-in">
+    <h2>CTF Blog & Writeups</h2>
+    <p>I'll be posting write-ups of interesting CTF challenges I've completed. Check back soon for walkthroughs, tips, and lessons learned!</p>
+    <a href="blog.html" class="button">Visit Blog</a>
+  </section>
+  <section class="certifications fade-in">
+    <h2>Certifications & Courses</h2>
+    <p>
+      A showcase of certifications I’ve earned and cybersecurity-related courses I’ve completed — covering topics like Linux, packet analysis, cloud, and secure development practices.
+    </p>
+    <a href="certs.html" class="button">View Certifications</a>
+  </section>
+</div>
 <div class="footer">
   &copy; 2025 All rights reserved.
 </div>
-
+<script>
+// Scroll animation observer
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
+});
+</script>
 </body>
 </html>
