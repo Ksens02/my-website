@@ -1,300 +1,506 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CTF Blog</title>
+  <title>Certifications & CTF Blog</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background-color: #0f0f0f;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2b 50%, #16213e 100%);
       color: #e0e0e0;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
     }
-
     header {
-      background-color: #1a1a1a;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 2px solid #00ffcc;
+      background: rgba(26, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px 20px 20px 20px;
+      border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      background: linear-gradient(45deg, #00ffcc, #00d4ff, #00ffcc);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      letter-spacing: 2px;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    header p {
+      color: #00ffcc;
+      font-size: 1.2rem;
+      margin: 0;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: rgba(0, 255, 204, 0.08);
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
     nav {
-      background-color: #111;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(10px);
       text-align: center;
-      padding: 10px;
+      padding: 15px;
+      margin-bottom: 40px;
+      border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+      position: sticky;
+      top: 90px;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
     }
-
     nav a {
+      margin: 0 20px;
       color: #00ffcc;
       text-decoration: none;
-      margin: 0 15px;
       font-weight: bold;
-      transition: color 0.3s;
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 8px 16px;
+      border-radius: 6px;
     }
-
     nav a:hover {
       color: #ffffff;
+      background: rgba(0, 255, 204, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
     }
-
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #00ffcc;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    nav a:hover::after {
+      width: 80%;
+    }
+    .main-content {
+      max-width: 1400px; /* even larger max width */
+      margin: 0 auto;
+      padding: 30px 10px 0 10px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 60vh;
+    }
     section {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
+      flex: 1 1 70%; /* base width 70% of container */
+      min-width: 60vw; /* at least 60% of viewport width */
+      max-width: 1100px; /* allow for a larger max width */
+      background: linear-gradient(145deg, rgba(26, 26, 43, 0.8), rgba(22, 33, 62, 0.8));
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 255, 204, 0.08);
+      padding: 40px 30px;
+      margin: 0 auto 40px auto;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+      opacity: 0;
+      transform: translateY(30px);
     }
-
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
     section h2 {
+      font-size: 2.2rem;
+      margin: 0 0 20px 0;
+      color: #00ffcc;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
       border-bottom: 2px solid #00ffcc;
       padding-bottom: 10px;
-      margin-bottom: 20px;
-      color: #00ffcc;
     }
-
-    .post {
-      margin-bottom: 30px;
-      padding: 20px;
-      background-color: #1b1b1b;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
-    }
-
-    .post h3 {
-      margin-top: 0;
-      color: #00ffcc;
-    }
-
     .footer {
       text-align: center;
       padding: 20px;
-      background-color: #1a1a1a;
+      background: rgba(26, 26, 43, 0.95);
       border-top: 1px solid #333;
       color: #999;
+      margin-top: 60px;
+      font-size: 1rem;
     }
-  .accordion {
-  cursor: pointer;
-  background-color: #1e1e2f; /* Dark cyber-style background */
-  color: #ffffff; /* White text */
-  padding: 15px 20px;
-  margin-top: 15px;
-  width: 100%;
-  border: none;
-  outline: none;
-  text-align: left;
-  font-size: 18px;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.accordion:hover {
-  background-color: #2a2a3d;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.35);
-}
-
-.accordion.active {
-  background-color: #34344a;
-}
-
-.accordion .arrow {
-  transition: transform 0.3s ease;
-  font-size: 16px;
-}
-
-.accordion.active .arrow {
-  transform: rotate(180deg);
-}
-
-.panel {
-  display: none;
-  padding: 15px 20px;
-  margin-top: 5px;
-  border-left: 3px solid #6c63ff; /* Accent line */
-  background-color: #282a36; /* Dark background to match site */
-  color: #ffffff; /* White text for readability */
-  border-radius: 0 0 8px 8px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-  position: relative; /* Ensures it doesn’t overlap other content */
-  z-index: 1; /* Keeps it above background, below fixed headers */
- }
- 
-.panel.show {
-  display: block;
-}
-</style>
+    /* Accordion styles */
+    .accordion {
+      cursor: pointer;
+      background-color: #1e1e2f;
+      color: #ffffff;
+      padding: 15px 20px;
+      margin-top: 15px;
+      width: 100%;
+      border: none;
+      outline: none;
+      text-align: left;
+      font-size: 18px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion:hover {
+      background-color: #2a2a3d;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+    }
+    .accordion.active {
+      background-color: #34344a;
+    }
+    .accordion .arrow {
+      transition: transform 0.3s ease;
+      font-size: 16px;
+    }
+    .accordion.active .arrow {
+      transform: rotate(180deg);
+    }
+    .panel {
+      display: none;
+      padding: 15px 20px;
+      margin-top: 5px;
+      border-left: 3px solid #6c63ff;
+      background-color: #282a36;
+      color: #ffffff;
+      border-radius: 0 0 8px 8px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 1;
+    }
+    .panel.show {
+      display: block;
+    }
+    /* Fade-in animation for sections and accordions */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .main-content {
+        padding: 10px 0 0 0;
+      }
+      section {
+        padding: 30px 10px;
+      }
+    }
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      nav a {
+        margin: 0 10px;
+        font-size: 1rem;
+      }
+      .main-content {
+        gap: 20px;
+      }
+      section {
+        padding: 20px 5px;
+      }
+    }
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 0;
+      }
+      section {
+        padding: 12px 2px;
+      }
+    }
+    .writeups-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .writeup-card {
+      background: linear-gradient(135deg, #1a1a2b 60%, #00ffcc 100%);
+      color: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,255,204,0.16);
+      padding: 40px 32px;
+      width: 60vw; /* At least 60% of the viewport width */
+      max-width: 900px;
+      min-width: 340px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: left;
+      font-size: 1.15rem;
+      margin: 0 auto;
+    }
+    .writeup-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 8px 36px rgba(0,255,204,0.24);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #181828;
+      color: #e0e0e0;
+      border-radius: 20px;
+      padding: 48px 36px;
+      max-width: 900px;
+      width: 80vw;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(0,255,204,0.18);
+      text-align: left;
+      font-size: 1.1rem;
+    }
+    .close {
+      position: absolute;
+      top: 18px; right: 24px;
+      font-size: 2.2rem;
+      color: #00ffcc;
+      cursor: pointer;
+      z-index: 10;
+    }
+    @media (max-width: 900px) {
+      .writeup-card, .modal-content {
+        width: 95vw;
+        max-width: 98vw;
+        padding: 24px 8px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <h1>CTF Blog</h1>
-  <p>Write-ups, techniques, and lessons from CTF challenges</p>
-</header>
-
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About Me</a>
-  <a href="certs.html">Certifications</a>
-</nav>
-
-<section>
- 
-  <h2>CTF Write-Ups</h2>
-
-<!-- Blog Entry 1 -->
-<button class="accordion">Mr Robot CTF -- TryHackMe.com &#9660;</button>
-<div class="panel">
-  <p>
-    In this write-up, I document my exploitation of the "Mr Robot" CTF on TryHackMe.com. The goal was to get root access and find three hidden keys located on the machine based on the popular show Mr. Robot.
-  </p>
-
-  <h4>Step 1: Enumeration</h4>
-  <p>Using <code>nmap</code>, I discovered the machine had ports 80 and 443 open; as a matter of fact, Mr.Robot was hosting a web server.</p>
-  <img src="images/mrrobot_nmap_scan.jpg" alt="Nmap Scan" style="max-width:100%; border:1px solid #ccc;">
-
-  <h4>Step 2: Organization</h4>
-  <p>Before going any further, I created a mrrobot directory on my machine to keep all potential info and documents about the target machine organized.</p>
-  <img src="images/mrrobot_dir.JPG" alt="mrrobot Directory" style="max-width:100%; border:1px solid #ccc;">
-
-  <h4>Step 3: Acces the Web Server</h4>
-  <p>Here I accessed the web server. It's actually a very cool website, with some neat animations based on the show. Overall, the theme of the machine is cool and well-done.</p>
-  <img src="images/mrrobot_webserver.JPG" alt="Mr.Robot web server" style="max-width:100%; border:1px solid #ccc;">
-  
-  <h4>Step 4: Check robots.txt and Download Given Documents</h4>
-  <p>The first thing I did was check the /robots.txt. From there, I discovered key 1 as well as a fsocity.dic dictionary. In the terminal, I ran a wget command to download both into my mrrobot directory on my machine. </p>
-  <img src="images/mrrobot_robotstxt.JPG" alt="Mr.Robot robots.txt" style="max-width:100%; border:1px solid #ccc;">
-  <p> After downloading both, I was able to get the first key.</p>
-    <img src="images/mrrobot_key1.JPG" alt="Mr.Robot Key 1" style="max-width:100%; border:1px solid #ccc;">
-  
-  <h4>Step 5: Website Directory Enumeration</h4>
-  <p>Next, I ran the following gobuster command to see if there were any other directories I could access: gobuster dir -u 10.10.230.208 -w /usr/share/wordlists/dirb/common.txt </p>
-  <p>I discovered a /wp-login with 200 status from this enumeration and promptly made my way to the Word Press login page.</p>
-  <img src="images/mrrobot_wplogin.JPG" alt="Mr.Robot WordPress login" style="max-width:100%; border:1px solid #ccc;">
-  
-  <h4>Step 6: Find login credentials</h4>
-  <p>You may notice the target machine's IP address has changed. That's because I continued with this CTF the next day, and the day after that.</p>
-  <p>From this point, I tried a simple login using "admin" in both the both username and password fields, which gave an interesting result back that stated "Invalid Username".</p>
-  <img src="images/mrrobot_invalidusername.JPG" alt="Mr. Robot Invalid Username" style="max-width:100%; border:1px solid #ccc;">
-  <p>I also noticed that after getting a wordcount of the "fsocity.dic" dictionary, that it had over 850,000 words. Using this info, I figured I could capture a login attempt with 
-  burpsuite, and run a hydra command to brute force the password using the dictionary. First, I turned on my FoxyProxy in my browser, and then ran burpsuite.</p>
-  <img src="images/mrrobot_burpsuite.JPG" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
-  <p>Before using hydra, I filtered the contents of fsocity.dic to remove any duplicates and shave the word count down using the following command: sort fsocity.dic | uniq > filtered_fsocity.dic</p>
-  <p>Using the login attempt info (the login attempt used http-post) from burpsuite, I used hydra to brute force the username field. Here is the command: hydra -L filtered_fsocity.dic -p something 10.10.102.187 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=Invalid username" -t 16</p>
-  <p>After that, I got the following username:</p>
-  <img src="images/mrrobot_username.JPG" alt="Mr.Robot Username" style="max-width:100%; border:1px solid #ccc;">
-  <p>When I used the found username, the login paged raised the following error: "The password field is empty". So, instead of raising invalid username, it says the password field is empty, which tells me the username is correct. </p>
-  <p>Now, I am going to use the following hydra command to find the password: hydra -l Elliot -P filtered_fsocity.dic 10.10.102.187 http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=is incorrect' -t 16</p>
-  <p>Here is the password:</p>
-  <img src="images/mrrobot_password.JPG" alt="Mr.Robot Password" style="max-width:100%; border:1px solid #ccc;">
-  
-  <h4>Step 7: Catch a reverse shell</h4>
-  <p>Now that I have succesfully logged in to the Word Press site, I navigated to Appearance-->Editor, where I can edit one of the web pages and catch a reverse shell. I chose to do this on the Archives template.</p>
-  <img src="images/mrrobot_adminpage.JPG" alt="Mr.Robot Admin page" style="max-width:100%; border:1px solid #ccc;">
-  <p>To get a reverse shell, I first googled "php-reverse-shell pentest monkey", clicked on the pentest monkey github link, copied the reverse shell code, and replaced the archive template with the reverse shell.</p>
-  <img src="images/mrrobot_pentestmonkey.J{G" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
-  <p>To actually catch the shell, I used the following netcat command in terminal: nc -lvnp 1000 (which is what I set in the reverse shell</p>
-  <img src="images/mrrobot_reverseshell.JPG" alt="Mr.Robot Reverse Shell" style="max-width:100%; border:1px solid #ccc;">
-  
-  <h4>Step 8: Finding Key 2</h4>
-  <p>In the shell, I used "ls /home" to see what other users were on the machine, which gave "robot". I used "cd /home/robot", and then "ls", which showed key-2-of-3.txt and password.raw-md5</p>
-  <img src="images/mrrobot_key2.JPG" alt="Mr.Robot Key 2" style="max-width:100%; border:1px solid #ccc;">
-  <p>Unfortunately, I cannot read the key because it is owned by robot. However, I can read password.raw-md5, which gave a hash value:</p><strong>c3fcd3d76192e4007dfb496cca67e13b</strong>
-  
-  <h4>Step 9: Cracking the hash</h4>
-  <p>Before trying to break the hash using software, I first checked to see if anyone had broken it already, or it could be cracked. I used crackstation.com and got the following pasword from successfully cracking the hash:</p><strong>abcdefghijklmnopqrstuvwxyz</strong>
-  
-  <h4>Step 10: Use the cracked hash</h4>
-  <p>Though I have the password, I can only log in to the user 'robot' when I use terminal, not shell. So, I have to turn the shell into an interactive terminal.</p>
-  <p>I did with the following line of code: python -c 'import pty;pty.spawn("/bin/bash")'</p>
-  <img src="images/mrrobot_python_terminal.JPG" alt="Mr.Robot Terminal" style="max-width:100%; border:1px solid #ccc;">
-  <p>I used "-su robot", and then pasted the password into "Password:" to log in as robot.</p>
-  
-  <h4>Step 11: Actually finding Key 2</h4>
-  <p>In terminal, as robot, I moved to their home directory, and then the robot directory once more. I then concatenated key-2-of-3.txt to get the following value:</p>
-  <img src="images/mrrobot_key-2-of-3.JPG" alt="Mr.Robot Key Two" style="max-width:100%; border:1px solid #ccc;">
-  
-  <h4>Step 12: Root Escalation</h4>
-  <p>Unfortunately, robot is not authorized to commands as root user. To do this, I need to find files that run as root<./p>
-  <p>I used this command to find files using: find / -perm -4000 -type f 2>/dev/null. I got the following output:</p>
-  <img src="images/mrrobot_finding_nmap.JPG" alt="Mr.Robot Finding nmap" style="max-width:100%; border:1px solid #ccc;">
-  <p>If you notice "/bin/nmap". This is interesting because older nmap versions had an interactive mode. I used the following command and got the following output:</p>
-  <img src="images/mrrobot_nmap-interactive.JPG" alt="Mr.Robot Interactive" style="max-width:100%; border:1px solid #ccc;">
-  <p>When I press the key "h", a manual for nmap commands comes up. The most interesting one being the "!" command, which allows users to run shell commands as root.</p>
-  <p>Using the "!" command with shell commands, I was able to move into /root, and concatenate key-3-of-3.txt, finishing the CTF.</p>
-  <img src="images/mrrobot_done.JPG" alt="Mr.Robot Finished" style="max-width:100%; border:1px solid #ccc;">
-</div>
-
-  <!-- Blog Entry 2 -->
-  <button class="accordion">Neighbour CTF -- TryHackMe.com &#9660;</button>
-<div class="panel">
-  <p>
-    In this write-up, I am going to be completing the Neighbour CTF. The goal is to find the flag on my "neighbor's" logged in page.
-  </p>
-
-  <h4>Step 1: Go to the Login page</h4>
-  <p>I accessed the login page at 10.10.199.215. I immediately noticed that at the very bottom, there is a "Crtl+U" command to add a guest account.</p>
-  <img src="images/neighbour_login_page.JPG" alt="Neighbour Login" style="max-width:100%; border:1px solid#ccc;">
-  <p>When this command is executed, it directed me to the log in page's HTML code. Again, something interesting at the very bottom. 
-  Not only is there instructions to log in with guest:guest, but also a warning that "admin user account is off limits". This could be an indication that
-  the admin account is vulnerable somehow. However, when I tried to login with admin:admin, I only got an error.
-  </p>
-  <img src="images/neighbour_login_html.JPG" alt="Neighbour Login HTML" style="max-width:100%; border:1px solid#ccc;">
-  
-  <h4>Step 2: Analyze guest Login page</h4>
-  <img src="images/neighbour_guest_login.JPG" alt="Neighbour Guest Login" style="max-width:100%; border:1px solid#ccc;">
-  <p>The first thing I did in the guest page is execute CRTL+U, which again, brought me to the HTML code of the page.</p>
-  <img src="images/neighbour_guest_html.JPG" alt="Neighbour Guest HTML" style="max-width:100%; border:1px solid#ccc;">
-  <p>Notice line 7, where there is yet another warning about the admin account's vulnerability. At this point, I was also aware that in the URL of the site, 
-  there is a "user=guest" field. So, I simply switched this value from "guest", to "admin", and this revealed the flag I was searching for.</p>
-  <img src="images/neighbour_flag.JPG" alt="Neighbour Flag" style="max-width:100%; border:1px solid#ccc;">
+  <header>
+    <h1>Certifications & CTF Blog</h1>
+    <p>Write-ups, techniques, and lessons from CTF challenges</p>
+  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Me</a>
+    <a href="certs.html">Certifications</a>
+  </nav>
+  <div class="main-content">
+    <section class="fade-in">
+      <h2>CTF Write-Ups</h2>
+      <div class="writeups-grid">
+        <div class="writeup-card" onclick="openModal('modal1')">
+          <h3>Mr Robot CTF</h3>
+          <p>TryHackMe.com - Root access, 3 keys, WordPress, reverse shell...</p>
+        </div>
+        <div class="writeup-card" onclick="openModal('modal2')">
+          <h3>Neighbour CTF</h3>
+          <p>TryHackMe.com - Guest/admin login, URL manipulation, flag discovery...</p>
+        </div>
+        <div class="writeup-card" onclick="openModal('modal3')">
+          <h3>MD2PDF</h3>
+          <p>TryHackMe.com - File converter, HTML injection, flag in PDF...</p>
+        </div>
+      </div>
+    </section>
   </div>
-
-  <!--Blog Entry 3-->
-  <button class="accordion">MD2PDF -- TryHackMe.com &#9660;</button>
-<div class="panel">
-  <p>
-    In this write-up, I am going to be completing the MD2PDF CTF. The goal is to infiltrate a new file converter tool to find the flag.
-  </p>
-
-  <h4>Step 1: Scan the Target IP Address</h4>
-  <p>The first thing I did was run an nmap scan on the target IP address, which revealed port 80 was open.</p>
-  <img src="images/md2pdf_nmap.JPG" alt="Md2PDF Nmap Scan" style="max-width:100%; border:1px solid#ccc;">
-  <p> Since port 80 is open, I went to my web browser and accessed the converter tool via the target ip address.
-  </p>
-  <img src="images/md2pdf_application.JPG" alt="Application" style="max-width:100%; border:1px solid#ccc;">
-  
-  <h4>Step 2: Find other web pages</h4>
-  <p>Next, I ran a quick gobuster command and found an admin page.</p>
-  <img src="images/md2pdf_dirb.JPG" alt="MD2PDF Dirbuster" style="max-width:100%; border:1px solid#ccc;">
-  <p>Accessing the admin site revealed the following. This is a big hint that shows a potential way in.</p>
-  <img src="images/md2pdf_forbidden.JPG" alt="Forbidden" style="max-width:100%; border:1px solid#ccc;">
-
-  <h4>Step 3: HTML Injection</h4>
-  <p>Going back to the home page, I injected HTML into the PDF converter.</p>
-  <img src="images/md2pdf_html_injection.JPG" alt="MD2PDF HTML injection" style="max-width:100%; border:1px solid#ccc;">
-  <p>This created a popup with the converted pdf that also revealed the flag.</p>
-  <img src="images/mdf2pdf_flag.JPG" alt="Flag" style="max-width:100%; border:1px solid#ccc;">
+  <!-- Modals are now here, directly under body -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal1')">&times;</span>
+      <!-- Full Mr Robot CTF write-up here -->
+      <h2>Mr Robot CTF -- TryHackMe.com</h2>
+      <p>
+        In this write-up, I document my exploitation of the "Mr Robot" CTF on TryHackMe.com. The goal was to get root access and find three hidden keys located on the machine based on the popular show Mr. Robot.
+      </p>
+      <h4>Step 1: Enumeration</h4>
+      <p>Using <code>nmap</code>, I discovered the machine had ports 80 and 443 open; as a matter of fact, Mr.Robot was hosting a web server.</p>
+      <img src="images/mrrobot_nmap_scan.jpg" alt="Nmap Scan" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 2: Organization</h4>
+      <p>Before going any further, I created a mrrobot directory on my machine to keep all potential info and documents about the target machine organized.</p>
+      <img src="images/mrrobot_dir.JPG" alt="mrrobot Directory" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 3: Acces the Web Server</h4>
+      <p>Here I accessed the web server. It's actually a very cool website, with some neat animations based on the show. Overall, the theme of the machine is cool and well-done.</p>
+      <img src="images/mrrobot_webserver.JPG" alt="Mr.Robot web server" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 4: Check robots.txt and Download Given Documents</h4>
+      <p>The first thing I did was check the /robots.txt. From there, I discovered key 1 as well as a fsocity.dic dictionary. In the terminal, I ran a wget command to download both into my mrrobot directory on my machine. </p>
+      <img src="images/mrrobot_robotstxt.JPG" alt="Mr.Robot robots.txt" style="max-width:100%; border:1px solid #ccc;">
+      <p> After downloading both, I was able to get the first key.</p>
+      <img src="images/mrrobot_key1.JPG" alt="Mr.Robot Key 1" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 5: Website Directory Enumeration</h4>
+      <p>Next, I ran the following gobuster command to see if there were any other directories I could access: gobuster dir -u 10.10.230.208 -w /usr/share/wordlists/dirb/common.txt </p>
+      <p>I discovered a /wp-login with 200 status from this enumeration and promptly made my way to the Word Press login page.</p>
+      <img src="images/mrrobot_wplogin.JPG" alt="Mr.Robot WordPress login" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 6: Find login credentials</h4>
+      <p>You may notice the target machine's IP address has changed. That's because I continued with this CTF the next day, and the day after that.</p>
+      <p>From this point, I tried a simple login using "admin" in both the both username and password fields, which gave an interesting result back that stated "Invalid Username".</p>
+      <img src="images/mrrobot_invalidusername.JPG" alt="Mr. Robot Invalid Username" style="max-width:100%; border:1px solid #ccc;">
+      <p>I also noticed that after getting a wordcount of the "fsocity.dic" dictionary, that it had over 850,000 words. Using this info, I figured I could capture a login attempt with 
+      burpsuite, and run a hydra command to brute force the password using the dictionary. First, I turned on my FoxyProxy in my browser, and then ran burpsuite.</p>
+      <img src="images/mrrobot_burpsuite.JPG" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
+      <p>Before using hydra, I filtered the contents of fsocity.dic to remove any duplicates and shave the word count down using the following command: sort fsocity.dic | uniq > filtered_fsocity.dic</p>
+      <p>Using the login attempt info (the login attempt used http-post) from burpsuite, I used hydra to brute force the username field. Here is the command: hydra -L filtered_fsocity.dic -p something 10.10.102.187 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=Invalid username" -t 16</p>
+      <p>After that, I got the following username:</p>
+      <img src="images/mrrobot_username.JPG" alt="Mr.Robot Username" style="max-width:100%; border:1px solid #ccc;">
+      <p>When I used the found username, the login paged raised the following error: "The password field is empty". So, instead of raising invalid username, it says the password field is empty, which tells me the username is correct. </p>
+      <p>Now, I am going to use the following hydra command to find the password: hydra -l Elliot -P filtered_fsocity.dic 10.10.102.187 http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=is incorrect' -t 16</p>
+      <p>Here is the password:</p>
+      <img src="images/mrrobot_password.JPG" alt="Mr.Robot Password" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 7: Catch a reverse shell</h4>
+      <p>Now that I have succesfully logged in to the Word Press site, I navigated to Appearance-->Editor, where I can edit one of the web pages and catch a reverse shell. I chose to do this on the Archives template.</p>
+      <img src="images/mrrobot_adminpage.JPG" alt="Mr.Robot Admin page" style="max-width:100%; border:1px solid #ccc;">
+      <p>To get a reverse shell, I first googled "php-reverse-shell pentest monkey", clicked on the pentest monkey github link, copied the reverse shell code, and replaced the archive template with the reverse shell.</p>
+      <img src="images/mrrobot_pentestmonkey.J{G" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
+      <p>To actually catch the shell, I used the following netcat command in terminal: nc -lvnp 1000 (which is what I set in the reverse shell</p>
+      <img src="images/mrrobot_reverseshell.JPG" alt="Mr.Robot Reverse Shell" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 8: Finding Key 2</h4>
+      <p>In the shell, I used "ls /home" to see what other users were on the machine, which gave "robot". I used "cd /home/robot", and then "ls", which showed key-2-of-3.txt and password.raw-md5</p>
+      <img src="images/mrrobot_key2.JPG" alt="Mr.Robot Key 2" style="max-width:100%; border:1px solid #ccc;">
+      <p>Unfortunately, I cannot read the key because it is owned by robot. However, I can read password.raw-md5, which gave a hash value:</p><strong>c3fcd3d76192e4007dfb496cca67e13b</strong>
+      <h4>Step 9: Cracking the hash</h4>
+      <p>Before trying to break the hash using software, I first checked to see if anyone had broken it already, or it could be cracked. I used crackstation.com and got the following pasword from successfully cracking the hash:</p><strong>abcdefghijklmnopqrstuvwxyz</strong>
+      <h4>Step 10: Use the cracked hash</h4>
+      <p>Though I have the password, I can only log in to the user 'robot' when I use terminal, not shell. So, I have to turn the shell into an interactive terminal.</p>
+      <p>I did with the following line of code: python -c 'import pty;pty.spawn("/bin/bash")'</p>
+      <img src="images/mrrobot_python_terminal.JPG" alt="Mr.Robot Terminal" style="max-width:100%; border:1px solid #ccc;">
+      <p>I used "-su robot", and then pasted the password into "Password:" to log in as robot.</p>
+      <h4>Step 11: Actually finding Key 2</h4>
+      <p>In terminal, as robot, I moved to their home directory, and then the robot directory once more. I then concatenated key-2-of-3.txt to get the following value:</p>
+      <img src="images/mrrobot_key-2-of-3.JPG" alt="Mr.Robot Key Two" style="max-width:100%; border:1px solid #ccc;">
+      <h4>Step 12: Root Escalation</h4>
+      <p>Unfortunately, robot is not authorized to commands as root user. To do this, I need to find files that run as root<./p>
+      <p>I used this command to find files using: find / -perm -4000 -type f 2>/dev/null. I got the following output:</p>
+      <img src="images/mrrobot_finding_nmap.JPG" alt="Mr.Robot Finding nmap" style="max-width:100%; border:1px solid #ccc;">
+      <p>If you notice "/bin/nmap". This is interesting because older nmap versions had an interactive mode. I used the following command and got the following output:</p>
+      <img src="images/mrrobot_nmap-interactive.JPG" alt="Mr.Robot Interactive" style="max-width:100%; border:1px solid #ccc;">
+      <p>When I press the key "h", a manual for nmap commands comes up. The most interesting one being the "!" command, which allows users to run shell commands as root.</p>
+      <p>Using the "!" command with shell commands, I was able to move into /root, and concatenate key-3-of-3.txt, finishing the CTF.</p>
+      <img src="images/mrrobot_done.JPG" alt="Mr.Robot Finished" style="max-width:100%; border:1px solid #ccc;">
+    </div>
   </div>
-
-
-</section>
-
-<div class="footer">
-  &copy; 2025 All rights reserved.
-</div>
-<script>
-  const accordions = document.querySelectorAll('.accordion');
-
-  accordions.forEach(button => {
-    button.addEventListener('click', () => {
-      button.classList.toggle('active');
-      const panel = button.nextElementSibling;
-      panel.classList.toggle('show');
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal2')">&times;</span>
+      <!-- Full Neighbour CTF write-up here -->
+      <h2>Neighbour CTF -- TryHackMe.com</h2>
+      <p>
+        In this write-up, I am going to be completing the Neighbour CTF. The goal is to find the flag on my "neighbor's" logged in page.
+      </p>
+      <h4>Step 1: Go to the Login page</h4>
+      <p>I accessed the login page at 10.10.199.215. I immediately noticed that at the very bottom, there is a "Crtl+U" command to add a guest account.</p>
+      <img src="images/neighbour_login_page.JPG" alt="Neighbour Login" style="max-width:100%; border:1px solid#ccc;">
+      <p>When this command is executed, it directed me to the log in page's HTML code. Again, something interesting at the very bottom. 
+      Not only is there instructions to log in with guest:guest, but also a warning that "admin user account is off limits". This could be an indication that
+      the admin account is vulnerable somehow. However, when I tried to login with admin:admin, I only got an error.
+      </p>
+      <img src="images/neighbour_login_html.JPG" alt="Neighbour Login HTML" style="max-width:100%; border:1px solid#ccc;">
+      <h4>Step 2: Analyze guest Login page</h4>
+      <img src="images/neighbour_guest_login.JPG" alt="Neighbour Guest Login" style="max-width:100%; border:1px solid#ccc;">
+      <p>The first thing I did in the guest page is execute CRTL+U, which again, brought me to the HTML code of the page.</p>
+      <img src="images/neighbour_guest_html.JPG" alt="Neighbour Guest HTML" style="max-width:100%; border:1px solid#ccc;">
+      <p>Notice line 7, where there is yet another warning about the admin account's vulnerability. At this point, I was also aware that in the URL of the site, 
+      there is a "user=guest" field. So, I simply switched this value from "guest", to "admin", and this revealed the flag I was searching for.</p>
+      <img src="images/neighbour_flag.JPG" alt="Neighbour Flag" style="max-width:100%; border:1px solid#ccc;">
+    </div>
+  </div>
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal3')">&times;</span>
+      <!-- Full MD2PDF write-up here -->
+      <h2>MD2PDF -- TryHackMe.com</h2>
+      <p>
+        In this write-up, I am going to be completing the MD2PDF CTF. The goal is to infiltrate a new file converter tool to find the flag.
+      </p>
+      <h4>Step 1: Scan the Target IP Address</h4>
+      <p>The first thing I did was run an nmap scan on the target IP address, which revealed port 80 was open.</p>
+      <img src="images/md2pdf_nmap.JPG" alt="Md2PDF Nmap Scan" style="max-width:100%; border:1px solid#ccc;">
+      <p> Since port 80 is open, I went to my web browser and accessed the converter tool via the target ip address.
+      </p>
+      <img src="images/md2pdf_application.JPG" alt="Application" style="max-width:100%; border:1px solid#ccc;">
+      <h4>Step 2: Find other web pages</h4>
+      <p>Next, I ran a quick gobuster command and found an admin page.</p>
+      <img src="images/md2pdf_dirb.JPG" alt="MD2PDF Dirbuster" style="max-width:100%; border:1px solid#ccc;">
+      <p>Accessing the admin site revealed the following. This is a big hint that shows a potential way in.</p>
+      <img src="images/md2pdf_forbidden.JPG" alt="Forbidden" style="max-width:100%; border:1px solid#ccc;">
+      <h4>Step 3: HTML Injection</h4>
+      <p>Going back to the home page, I injected HTML into the PDF converter.</p>
+      <img src="images/md2pdf_html_injection.JPG" alt="MD2PDF HTML injection" style="max-width:100%; border:1px solid#ccc;">
+      <p>This created a popup with the converted pdf that also revealed the flag.</p>
+      <img src="images/mdf2pdf_flag.JPG" alt="Flag" style="max-width:100%; border:1px solid#ccc;">
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2025 All rights reserved.
+  </div>
+  <script>
+    // Scroll animation observer
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+    document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
     });
-  });
-</script>
 
+    // Accordion logic
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.toggle('active');
+        const panel = button.nextElementSibling;
+        panel.classList.toggle('show');
+        // Animate arrow
+        const arrow = button.querySelector('.arrow');
+        if (arrow) arrow.classList.toggle('rotated');
+      });
+    });
+
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    // Optional: Close modal on background click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) modal.style.display = 'none';
+      });
+    });
+  </script>
 </body>
 </html>
