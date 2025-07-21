@@ -274,25 +274,38 @@
     .modal-content {
       background: #181828;
       color: #e0e0e0;
-      border-radius: 20px;
-      padding: 48px 36px;
-      max-width: 98vw;   /* Almost full viewport width */
-      width: 98vw;
-      max-height: 96vh;  /* Almost full viewport height */
-      height: auto;
+      border-radius: 0;
+      padding: 0;
+      max-width: 100vw;
+      width: 100vw;
+      max-height: 100vh;
+      height: 100vh;
       overflow-y: auto;
       position: relative;
-      box-shadow: 0 8px 40px rgba(0,255,204,0.18);
+      box-shadow: none;
       text-align: left;
       font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-inner {
+      padding: 32px 24px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      overflow-y: auto;
     }
     .close {
       position: absolute;
-      top: 18px; right: 24px;
+      top: 18px;
+      right: 24px;
       font-size: 2.2rem;
       color: #00ffcc;
       cursor: pointer;
       z-index: 10;
+      background: rgba(24,24,40,0.8);
+      border-radius: 50%;
+      padding: 4px 12px;
     }
     @media (max-width: 900px) {
       .writeup-card, .modal-content {
@@ -336,74 +349,76 @@
   <div id="modal1" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('modal1')">&times;</span>
-      <!-- Full Mr Robot CTF write-up here -->
-      <h2>Mr Robot CTF -- TryHackMe.com</h2>
-      <p>
-        In this write-up, I document my exploitation of the "Mr Robot" CTF on TryHackMe.com. The goal was to get root access and find three hidden keys located on the machine based on the popular show Mr. Robot.
-      </p>
-      <h4>Step 1: Enumeration</h4>
-      <p>Using <code>nmap</code>, I discovered the machine had ports 80 and 443 open; as a matter of fact, Mr.Robot was hosting a web server.</p>
-      <img src="images/mrrobot_nmap_scan.jpg" alt="Nmap Scan" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 2: Organization</h4>
-      <p>Before going any further, I created a mrrobot directory on my machine to keep all potential info and documents about the target machine organized.</p>
-      <img src="images/mrrobot_dir.JPG" alt="mrrobot Directory" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 3: Acces the Web Server</h4>
-      <p>Here I accessed the web server. It's actually a very cool website, with some neat animations based on the show. Overall, the theme of the machine is cool and well-done.</p>
-      <img src="images/mrrobot_webserver.JPG" alt="Mr.Robot web server" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 4: Check robots.txt and Download Given Documents</h4>
-      <p>The first thing I did was check the /robots.txt. From there, I discovered key 1 as well as a fsocity.dic dictionary. In the terminal, I ran a wget command to download both into my mrrobot directory on my machine. </p>
-      <img src="images/mrrobot_robotstxt.JPG" alt="Mr.Robot robots.txt" style="max-width:100%; border:1px solid #ccc;">
-      <p> After downloading both, I was able to get the first key.</p>
-      <img src="images/mrrobot_key1.JPG" alt="Mr.Robot Key 1" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 5: Website Directory Enumeration</h4>
-      <p>Next, I ran the following gobuster command to see if there were any other directories I could access: gobuster dir -u 10.10.230.208 -w /usr/share/wordlists/dirb/common.txt </p>
-      <p>I discovered a /wp-login with 200 status from this enumeration and promptly made my way to the Word Press login page.</p>
-      <img src="images/mrrobot_wplogin.JPG" alt="Mr.Robot WordPress login" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 6: Find login credentials</h4>
-      <p>You may notice the target machine's IP address has changed. That's because I continued with this CTF the next day, and the day after that.</p>
-      <p>From this point, I tried a simple login using "admin" in both the both username and password fields, which gave an interesting result back that stated "Invalid Username".</p>
-      <img src="images/mrrobot_invalidusername.JPG" alt="Mr. Robot Invalid Username" style="max-width:100%; border:1px solid #ccc;">
-      <p>I also noticed that after getting a wordcount of the "fsocity.dic" dictionary, that it had over 850,000 words. Using this info, I figured I could capture a login attempt with 
-      burpsuite, and run a hydra command to brute force the password using the dictionary. First, I turned on my FoxyProxy in my browser, and then ran burpsuite.</p>
-      <img src="images/mrrobot_burpsuite.JPG" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
-      <p>Before using hydra, I filtered the contents of fsocity.dic to remove any duplicates and shave the word count down using the following command: sort fsocity.dic | uniq > filtered_fsocity.dic</p>
-      <p>Using the login attempt info (the login attempt used http-post) from burpsuite, I used hydra to brute force the username field. Here is the command: hydra -L filtered_fsocity.dic -p something 10.10.102.187 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=Invalid username" -t 16</p>
-      <p>After that, I got the following username:</p>
-      <img src="images/mrrobot_username.JPG" alt="Mr.Robot Username" style="max-width:100%; border:1px solid #ccc;">
-      <p>When I used the found username, the login paged raised the following error: "The password field is empty". So, instead of raising invalid username, it says the password field is empty, which tells me the username is correct. </p>
-      <p>Now, I am going to use the following hydra command to find the password: hydra -l Elliot -P filtered_fsocity.dic 10.10.102.187 http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=is incorrect' -t 16</p>
-      <p>Here is the password:</p>
-      <img src="images/mrrobot_password.JPG" alt="Mr.Robot Password" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 7: Catch a reverse shell</h4>
-      <p>Now that I have succesfully logged in to the Word Press site, I navigated to Appearance-->Editor, where I can edit one of the web pages and catch a reverse shell. I chose to do this on the Archives template.</p>
-      <img src="images/mrrobot_adminpage.JPG" alt="Mr.Robot Admin page" style="max-width:100%; border:1px solid #ccc;">
-      <p>To get a reverse shell, I first googled "php-reverse-shell pentest monkey", clicked on the pentest monkey github link, copied the reverse shell code, and replaced the archive template with the reverse shell.</p>
-      <img src="images/mrrobot_pentestmonkey.J{G" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
-      <p>To actually catch the shell, I used the following netcat command in terminal: nc -lvnp 1000 (which is what I set in the reverse shell</p>
-      <img src="images/mrrobot_reverseshell.JPG" alt="Mr.Robot Reverse Shell" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 8: Finding Key 2</h4>
-      <p>In the shell, I used "ls /home" to see what other users were on the machine, which gave "robot". I used "cd /home/robot", and then "ls", which showed key-2-of-3.txt and password.raw-md5</p>
-      <img src="images/mrrobot_key2.JPG" alt="Mr.Robot Key 2" style="max-width:100%; border:1px solid #ccc;">
-      <p>Unfortunately, I cannot read the key because it is owned by robot. However, I can read password.raw-md5, which gave a hash value:</p><strong>c3fcd3d76192e4007dfb496cca67e13b</strong>
-      <h4>Step 9: Cracking the hash</h4>
-      <p>Before trying to break the hash using software, I first checked to see if anyone had broken it already, or it could be cracked. I used crackstation.com and got the following pasword from successfully cracking the hash:</p><strong>abcdefghijklmnopqrstuvwxyz</strong>
-      <h4>Step 10: Use the cracked hash</h4>
-      <p>Though I have the password, I can only log in to the user 'robot' when I use terminal, not shell. So, I have to turn the shell into an interactive terminal.</p>
-      <p>I did with the following line of code: python -c 'import pty;pty.spawn("/bin/bash")'</p>
-      <img src="images/mrrobot_python_terminal.JPG" alt="Mr.Robot Terminal" style="max-width:100%; border:1px solid #ccc;">
-      <p>I used "-su robot", and then pasted the password into "Password:" to log in as robot.</p>
-      <h4>Step 11: Actually finding Key 2</h4>
-      <p>In terminal, as robot, I moved to their home directory, and then the robot directory once more. I then concatenated key-2-of-3.txt to get the following value:</p>
-      <img src="images/mrrobot_key-2-of-3.JPG" alt="Mr.Robot Key Two" style="max-width:100%; border:1px solid #ccc;">
-      <h4>Step 12: Root Escalation</h4>
-      <p>Unfortunately, robot is not authorized to commands as root user. To do this, I need to find files that run as root<./p>
-      <p>I used this command to find files using: find / -perm -4000 -type f 2>/dev/null. I got the following output:</p>
-      <img src="images/mrrobot_finding_nmap.JPG" alt="Mr.Robot Finding nmap" style="max-width:100%; border:1px solid #ccc;">
-      <p>If you notice "/bin/nmap". This is interesting because older nmap versions had an interactive mode. I used the following command and got the following output:</p>
-      <img src="images/mrrobot_nmap-interactive.JPG" alt="Mr.Robot Interactive" style="max-width:100%; border:1px solid #ccc;">
-      <p>When I press the key "h", a manual for nmap commands comes up. The most interesting one being the "!" command, which allows users to run shell commands as root.</p>
-      <p>Using the "!" command with shell commands, I was able to move into /root, and concatenate key-3-of-3.txt, finishing the CTF.</p>
-      <img src="images/mrrobot_done.JPG" alt="Mr.Robot Finished" style="max-width:100%; border:1px solid #ccc;">
+      <div class="modal-inner">
+        <!-- Full Mr Robot CTF write-up here -->
+        <h2>Mr Robot CTF -- TryHackMe.com</h2>
+        <p>
+          In this write-up, I document my exploitation of the "Mr Robot" CTF on TryHackMe.com. The goal was to get root access and find three hidden keys located on the machine based on the popular show Mr. Robot.
+        </p>
+        <h4>Step 1: Enumeration</h4>
+        <p>Using <code>nmap</code>, I discovered the machine had ports 80 and 443 open; as a matter of fact, Mr.Robot was hosting a web server.</p>
+        <img src="images/mrrobot_nmap_scan.jpg" alt="Nmap Scan" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 2: Organization</h4>
+        <p>Before going any further, I created a mrrobot directory on my machine to keep all potential info and documents about the target machine organized.</p>
+        <img src="images/mrrobot_dir.JPG" alt="mrrobot Directory" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 3: Acces the Web Server</h4>
+        <p>Here I accessed the web server. It's actually a very cool website, with some neat animations based on the show. Overall, the theme of the machine is cool and well-done.</p>
+        <img src="images/mrrobot_webserver.JPG" alt="Mr.Robot web server" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 4: Check robots.txt and Download Given Documents</h4>
+        <p>The first thing I did was check the /robots.txt. From there, I discovered key 1 as well as a fsocity.dic dictionary. In the terminal, I ran a wget command to download both into my mrrobot directory on my machine. </p>
+        <img src="images/mrrobot_robotstxt.JPG" alt="Mr.Robot robots.txt" style="max-width:100%; border:1px solid #ccc;">
+        <p> After downloading both, I was able to get the first key.</p>
+        <img src="images/mrrobot_key1.JPG" alt="Mr.Robot Key 1" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 5: Website Directory Enumeration</h4>
+        <p>Next, I ran the following gobuster command to see if there were any other directories I could access: gobuster dir -u 10.10.230.208 -w /usr/share/wordlists/dirb/common.txt </p>
+        <p>I discovered a /wp-login with 200 status from this enumeration and promptly made my way to the Word Press login page.</p>
+        <img src="images/mrrobot_wplogin.JPG" alt="Mr.Robot WordPress login" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 6: Find login credentials</h4>
+        <p>You may notice the target machine's IP address has changed. That's because I continued with this CTF the next day, and the day after that.</p>
+        <p>From this point, I tried a simple login using "admin" in both the both username and password fields, which gave an interesting result back that stated "Invalid Username".</p>
+        <img src="images/mrrobot_invalidusername.JPG" alt="Mr. Robot Invalid Username" style="max-width:100%; border:1px solid #ccc;">
+        <p>I also noticed that after getting a wordcount of the "fsocity.dic" dictionary, that it had over 850,000 words. Using this info, I figured I could capture a login attempt with 
+        burpsuite, and run a hydra command to brute force the password using the dictionary. First, I turned on my FoxyProxy in my browser, and then ran burpsuite.</p>
+        <img src="images/mrrobot_burpsuite.JPG" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
+        <p>Before using hydra, I filtered the contents of fsocity.dic to remove any duplicates and shave the word count down using the following command: sort fsocity.dic | uniq > filtered_fsocity.dic</p>
+        <p>Using the login attempt info (the login attempt used http-post) from burpsuite, I used hydra to brute force the username field. Here is the command: hydra -L filtered_fsocity.dic -p something 10.10.102.187 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=Invalid username" -t 16</p>
+        <p>After that, I got the following username:</p>
+        <img src="images/mrrobot_username.JPG" alt="Mr.Robot Username" style="max-width:100%; border:1px solid #ccc;">
+        <p>When I used the found username, the login paged raised the following error: "The password field is empty". So, instead of raising invalid username, it says the password field is empty, which tells me the username is correct. </p>
+        <p>Now, I am going to use the following hydra command to find the password: hydra -l Elliot -P filtered_fsocity.dic 10.10.102.187 http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=is incorrect' -t 16</p>
+        <p>Here is the password:</p>
+        <img src="images/mrrobot_password.JPG" alt="Mr.Robot Password" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 7: Catch a reverse shell</h4>
+        <p>Now that I have succesfully logged in to the Word Press site, I navigated to Appearance-->Editor, where I can edit one of the web pages and catch a reverse shell. I chose to do this on the Archives template.</p>
+        <img src="images/mrrobot_adminpage.JPG" alt="Mr.Robot Admin page" style="max-width:100%; border:1px solid #ccc;">
+        <p>To get a reverse shell, I first googled "php-reverse-shell pentest monkey", clicked on the pentest monkey github link, copied the reverse shell code, and replaced the archive template with the reverse shell.</p>
+        <img src="images/mrrobot_pentestmonkey.J{G" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
+        <p>To actually catch the shell, I used the following netcat command in terminal: nc -lvnp 1000 (which is what I set in the reverse shell</p>
+        <img src="images/mrrobot_reverseshell.JPG" alt="Mr.Robot Reverse Shell" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 8: Finding Key 2</h4>
+        <p>In the shell, I used "ls /home" to see what other users were on the machine, which gave "robot". I used "cd /home/robot", and then "ls", which showed key-2-of-3.txt and password.raw-md5</p>
+        <img src="images/mrrobot_key2.JPG" alt="Mr.Robot Key 2" style="max-width:100%; border:1px solid #ccc;">
+        <p>Unfortunately, I cannot read the key because it is owned by robot. However, I can read password.raw-md5, which gave a hash value:</p><strong>c3fcd3d76192e4007dfb496cca67e13b</strong>
+        <h4>Step 9: Cracking the hash</h4>
+        <p>Before trying to break the hash using software, I first checked to see if anyone had broken it already, or it could be cracked. I used crackstation.com and got the following pasword from successfully cracking the hash:</p><strong>abcdefghijklmnopqrstuvwxyz</strong>
+        <h4>Step 10: Use the cracked hash</h4>
+        <p>Though I have the password, I can only log in to the user 'robot' when I use terminal, not shell. So, I have to turn the shell into an interactive terminal.</p>
+        <p>I did with the following line of code: python -c 'import pty;pty.spawn("/bin/bash")'</p>
+        <img src="images/mrrobot_python_terminal.JPG" alt="Mr.Robot Terminal" style="max-width:100%; border:1px solid #ccc;">
+        <p>I used "-su robot", and then pasted the password into "Password:" to log in as robot.</p>
+        <h4>Step 11: Actually finding Key 2</h4>
+        <p>In terminal, as robot, I moved to their home directory, and then the robot directory once more. I then concatenated key-2-of-3.txt to get the following value:</p>
+        <img src="images/mrrobot_key-2-of-3.JPG" alt="Mr.Robot Key Two" style="max-width:100%; border:1px solid #ccc;">
+        <h4>Step 12: Root Escalation</h4>
+        <p>Unfortunately, robot is not authorized to commands as root user. To do this, I need to find files that run as root<./p>
+        <p>I used this command to find files using: find / -perm -4000 -type f 2>/dev/null. I got the following output:</p>
+        <img src="images/mrrobot_finding_nmap.JPG" alt="Mr.Robot Finding nmap" style="max-width:100%; border:1px solid #ccc;">
+        <p>If you notice "/bin/nmap". This is interesting because older nmap versions had an interactive mode. I used the following command and got the following output:</p>
+        <img src="images/mrrobot_nmap-interactive.JPG" alt="Mr.Robot Interactive" style="max-width:100%; border:1px solid #ccc;">
+        <p>When I press the key "h", a manual for nmap commands comes up. The most interesting one being the "!" command, which allows users to run shell commands as root.</p>
+        <p>Using the "!" command with shell commands, I was able to move into /root, and concatenate key-3-of-3.txt, finishing the CTF.</p>
+        <img src="images/mrrobot_done.JPG" alt="Mr.Robot Finished" style="max-width:100%; border:1px solid #ccc;">
+      </div>
     </div>
   </div>
   <div id="modal2" class="modal">
