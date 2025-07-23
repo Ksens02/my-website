@@ -1,95 +1,248 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Certifications & Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
-      background-color: #0f0f0f;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2b 50%, #16213e 100%);
       color: #e0e0e0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
+      min-height: 100vh;
+      letter-spacing: 0.01em;
+      text-align: center;
+      overflow-x: hidden;
     }
-
     header {
-      background-color: #1a1a1a;
-      padding: 20px;
+      background: rgba(26, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px 20px 20px 20px;
+      border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       text-align: center;
-      border-bottom: 2px solid #00ffcc;
     }
-
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      background: linear-gradient(45deg, #00ffcc, #00d4ff, #00ffcc);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      letter-spacing: 2px;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    header p {
+      color: #00ffcc;
+      font-size: 1.2rem;
+      margin: 0;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: rgba(0, 255, 204, 0.08);
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
     nav {
-      background-color: #111;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(10px);
       text-align: center;
-      padding: 10px;
+      padding: 15px;
+      margin-bottom: 40px;
+      border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+      position: sticky;
+      top: 90px;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
     }
-
     nav a {
-      margin: 0 15px;
+      margin: 0 20px;
       color: #00ffcc;
       text-decoration: none;
       font-weight: bold;
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 8px 16px;
+      border-radius: 6px;
     }
-
     nav a:hover {
       color: #ffffff;
+      background: rgba(0, 255, 204, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
     }
-
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #00ffcc;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    nav a:hover::after {
+      width: 80%;
+    }
+    .main-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 10px 0 10px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
     section {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
+      background: linear-gradient(145deg, rgba(26, 26, 43, 0.8), rgba(22, 33, 62, 0.8));
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 255, 204, 0.08);
+      padding: 40px 30px;
+      margin: 0 auto;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(30px);
     }
-
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
     h2 {
+      font-size: 2.2rem;
+      margin: 0 0 20px 0;
+      color: #00ffcc;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
       border-bottom: 2px solid #00ffcc;
       padding-bottom: 10px;
-      margin-bottom: 20px;
-      color: #00ffcc;
     }
-
-    .accordion {
-      background-color: #1b1b1b;
-      border: none;
-      color: #00ffcc;
-      cursor: pointer;
-      padding: 15px;
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .cert-card {
+      background: #232946;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0, 230, 195, 0.07);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #232946;
+    }
+    .cert-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 32px rgba(0, 255, 204, 0.15);
+      border: 1px solid #00ffcc;
+    }
+    .cert-card img {
       width: 100%;
-      text-align: left;
-      outline: none;
-      font-size: 16px;
-      transition: background-color 0.2s ease;
-      border-left: 4px solid #00ffcc;
-      margin-bottom: 5px;
-      border-radius: 6px;
+      max-width: 220px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 12px rgba(0, 255, 204, 0.10);
+      background: #181824;
     }
-
-    .accordion:hover {
-      background-color: #222;
+    .cert-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #00ffcc;
+      margin-bottom: 0.5rem;
+      text-align: center;
     }
-
-    .panel {
-      display: none;
-      overflow: hidden;
-      background-color: #2a2a2a;
-      padding: 15px;
-      border-radius: 0 0 6px 6px;
+    .cert-desc {
+      font-size: 1rem;
+      color: #b8c1ec;
+      margin-bottom: 0.5rem;
+      text-align: center;
     }
-
-    .panel img {
-      max-width: 100%;
-      border-radius: 6px;
-      margin-top: 10px;
-      box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    .cert-status {
+      font-size: 0.95rem;
+      color: #ffb86b;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
     }
-
+    .courses-list {
+      background: #232946;
+      border-radius: 12px;
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(0, 255, 204, 0.07);
+      margin-bottom: 2rem;
+    }
+    .courses-list ul {
+      list-style: disc inside;
+      color: #b8c1ec;
+      font-size: 1.05rem;
+      margin: 0;
+      padding-left: 1.2rem;
+    }
     .footer {
       text-align: center;
       padding: 20px;
-      background-color: #1a1a1a;
+      background: rgba(26, 26, 43, 0.95);
       border-top: 1px solid #333;
       color: #999;
+      margin-top: 60px;
+      font-size: 1rem;
+    }
+    @media (max-width: 900px) {
+      .main-content {
+        padding: 10px 0 0 0;
+      }
+      section {
+        padding: 30px 10px;
+      }
+    }
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      nav a {
+        margin: 0 10px;
+        font-size: 1rem;
+      }
+      .main-content {
+        gap: 20px;
+      }
+      section {
+        padding: 20px 5px;
+      }
+    }
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 0;
+      }
+      section {
+        padding: 12px 2px;
+      }
+      .cert-card {
+        padding: 1rem 0.5rem;
+      }
     }
   </style>
 </head>
@@ -98,61 +251,74 @@
     <h1>Certifications & Courses</h1>
     <p>Courses I've completed and certifications I've earned</p>
   </header>
-
   <nav>
-    <a href="about.html">About Me</a>
     <a href="index.html">Home</a>
+    <a href="about.html">About Me</a>
     <a href="blog.html">CTF Blog</a>
   </nav>
-
-  <section>
-    <h2>Certifications</h2>
-
-    <button class="accordion">PCEP - Certified Entry-Level Python Programmer</button>
-    <div class="panel">
-      <img src="images/python-cert.jpg" alt="Python PCEP Certification" />
-    </div>
-    
-     <button class="accordion">Docker Foundations Professional Certificate</button>
-    <div class="panel">
-      <p>Certificate provided by Linkedin, Learn Docker for software development, real-world container use, 
-      and advanced deployment with Docker Compose. </p>
-      <img src="images/CertificateOfCompletion_Docker Foundations Professional Certificate.jpg "alt="Docker Certification"/>
-    </div>
-   
-    <button class="accordion">TryHackMe: Cybsecurity 101 (In Progress)</button>
-    <div class="panel">
-      <p>Covered networking, enumeration, and web exploitation basics.</p>
-      <img src="images/thm-cert.jpg" alt="TryHackMe Certificate" />
-    </div>
-     
-    <button class="accordion">Analyze Network Traffic with TCPDump: Build a logging tool</button>
-    <div class="panel">
-      <p>Completed a guided project on using tcpdump to capture and analyze TCP traffic, applying foundational Linux and networking skills.</p>
-      <img src="images/tcpdump-cert.jpg" alt="Coursera Certification" />
-    </div>
-
-    <h2>Courses Completed</h2>
-    <ul>
-      <li>Introduction to HTML (Summer Class)</li>
-      <li>Python for Security (custom Scapy scripting)</li>
-      <li>Wireshark & Packet Analysis Fundamentals</li>
-    </ul>
-  </section>
-
-  <div class="footer">
-      © 2025 All rights reserved.
+  <div class="main-content">
+    <section class="fade-in">
+      <h2>Certifications</h2>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <img src="images/python-cert.jpg" alt="Python PCEP Certification" />
+          <div class="cert-title">PCEP - Certified Entry-Level Python Programmer</div>
+          <div class="cert-desc">Credential for foundational Python programming knowledge.</div>
+        </div>
+        <div class="cert-card">
+          <img src="images/CertificateOfCompletion_Docker Foundations Professional Certificate.jpg" alt="Docker Certification"/>
+          <div class="cert-title">Docker Foundations Professional Certificate</div>
+          <div class="cert-desc">Provided by LinkedIn. Covers Docker for software development, real-world container use, and advanced deployment with Docker Compose.</div>
+        </div>
+        <div class="cert-card">
+          <img src="images/thm-cert.jpg" alt="TryHackMe Certificate" />
+          <div class="cert-title">TryHackMe: Cybersecurity 101</div>
+          <div class="cert-status">In Progress</div>
+          <div class="cert-desc">Covers networking, enumeration, and web exploitation basics.</div>
+        </div>
+        <div class="cert-card">
+          <img src="images/tcpdump-cert.jpg" alt="Coursera Certification" />
+          <div class="cert-title">Analyze Network Traffic with TCPDump</div>
+          <div class="cert-desc">Guided project on using tcpdump to capture and analyze TCP traffic, applying foundational Linux and networking skills.</div>
+        </div>
+      </div>
+      <h2>Courses Completed</h2>
+      <div class="courses-list">
+        <ul>
+          <li>Introduction to HTML (Summer Class)</li>
+          <li>Python for Security (custom Scapy scripting)</li>
+          <li>Wireshark &amp; Packet Analysis Fundamentals</li>
+          <li>Intro to Computer Science</li>
+          <li>Intro to Data Science</li>
+          <li>Intro to Cybersecurity</li>
+          <li>Linear and Non-Linear Data Structures</li>
+          <li>Digital Logic and Computer Organization</li>
+          <li>Operating Systems</li>
+          <li>Information Security</li>
+          <li>Web Design and Development</li>
+        </ul>
+      </div>
+    </section>
   </div>
-
+  <div class="footer">
+    &copy; 2025 All rights reserved.
+  </div>
   <script>
-    const acc = document.querySelectorAll('.accordion');
-    acc.forEach(btn => {
-      btn.addEventListener('click', function () {
-        this.classList.toggle('active');
-        const panel = this.nextElementSibling;
-        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+  // Scroll animation observer
+  const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+  };
+  const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+          }
       });
-    });
+  }, observerOptions);
+  document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
+  });
   </script>
 </body>
 </html>
