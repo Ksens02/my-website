@@ -302,12 +302,12 @@
 
 <div class="game-menu">
     <div class="game-container fade-in" id="wordle-game">
-        <a href="#" class="button">Wordle</a>
+        <a href="#" class="button">LetterLogic</a>
         <div class="game-status">Challenge your vocabulary skills!</div>
     </div>
 
-    <div class="game-container fade-in coming-soon" id="tetris-game">
-        <h2>Tetris</h2>
+    <div class="game-container fade-in" id="tetris-game">
+        <a href="#" class="button">GridDrop</a>
         <div class="game-status">Classic block-stacking puzzle game</div>
     </div>
 
@@ -320,6 +320,30 @@
         <h2>Puzzle</h2>
         <div class="game-status">Test your problem-solving skills</div>
     </div>
+</div>
+
+<div id="wordle-modal" style="display:none; position:fixed; z-index:3000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center;">
+  <div style="background:#232946; border-radius:16px; padding:32px 24px; max-width:400px; margin:auto; box-shadow:0 8px 32px rgba(0,255,204,0.25); position:relative;">
+    <button id="wordle-close" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#00ffcc; font-size:2rem; cursor:pointer;">&times;</button>
+    <h2 style="color:#00ffcc; text-align:center;">LetterLogic</h2>
+    <div id="wordle-board" style="display:grid; grid-template-rows:repeat(5,1fr); gap:8px; margin-bottom:16px;"></div>
+    <input id="wordle-input" type="text" maxlength="5" style="width:100%; font-size:1.2rem; padding:8px; border-radius:6px; border:1px solid #00ffcc; margin-bottom:8px; text-transform:lowercase;" autocomplete="off" />
+    <button id="wordle-submit" style="width:100%; font-size:1.1rem; background:#00ffcc; color:#232946; border:none; border-radius:6px; padding:8px; font-weight:bold; cursor:pointer;">Check</button>
+    <button id="wordle-again" style="width:100%; font-size:1.1rem; background:#232946; color:#00ffcc; border:1px solid #00ffcc; border-radius:6px; padding:8px; font-weight:bold; cursor:pointer; margin-top:8px; display:none;">Play Again</button>
+    <div id="wordle-message" style="text-align:center; color:#ffb86b; margin-top:10px; min-height:24px;"></div>
+  </div>
+</div>
+
+<div id="tetris-modal" style="display:none; position:fixed; z-index:3000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center;">
+  <div style="background:#232946; border-radius:16px; padding:32px 24px; max-width:850px; margin:auto; box-shadow:0 8px 32px rgba(0,255,204,0.25); position:relative;">
+    <button id="tetris-close" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#00ffcc; font-size:2rem; cursor:pointer;">&times;</button>
+    <h2 style="color:#00ffcc; text-align:center;">GridDrop</h2>
+    <canvas id="tetris-canvas" width="360" height="720" style="background:#181824; display:block; margin:0 auto 16px auto; border-radius:8px; box-shadow:0 2px 12px rgba(0,255,204,0.10);"></canvas>
+    <div style="text-align:center; color:#ffb86b; margin-top:10px; min-height:24px;">
+      <span id="tetris-score">Score: 0  Round: 1</span>
+    </div>
+    <button id="tetris-again" style="width:100%; font-size:1.1rem; background:#232946; color:#00ffcc; border:1px solid #00ffcc; border-radius:6px; padding:8px; font-weight:bold; cursor:pointer; margin-top:8px; display:none;">Play Again</button>
+  </div>
 </div>
 
 <script>
@@ -342,20 +366,6 @@ document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
 
-// Add click handlers for games
-document.getElementById('wordle-game').addEventListener('click', function() {
-    // Add loading state
-    const button = this.querySelector('.button');
-    const originalText = button.textContent;
-    button.innerHTML = 'Loading<span class="loading"></span>';
-    
-    // Simulate loading (replace with actual game logic)
-    setTimeout(() => {
-        button.textContent = originalText;
-        alert('Wordle game would launch here!');
-    }, 2000);
-});
-
 // Add hover sound effect (optional)
 document.querySelectorAll('.game-container').forEach(container => {
     container.addEventListener('mouseenter', function() {
@@ -370,6 +380,4 @@ document.querySelectorAll('.game-container').forEach(container => {
 </script>
 
 <script src="js/wordle.js"></script>
-<script src="js/tetris.js">const tetrisGame = new Tetris('tetris-game');</script>
-</body>
-</html>
+<script src="js/tetris.js"></script>
