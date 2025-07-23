@@ -287,6 +287,59 @@
         opacity: 1;
         transform: translateY(0);
     }
+
+    .bottom-layer {
+      background: #232946;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: content-box; /* or border-box, but then account for padding/border */
+      margin: 0 auto;
+      padding: 0;
+      /* Remove any fixed width/height here if you set them in JS! */
+      /* Or set them to match the canvas + controls: */
+      /* width: 850px;  height: 890px; */
+    }
+
+    .snake-controls-bar {
+      width: 100%;
+      background: #232946; /* matches modal background */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 -2px 12px rgba(0,255,204,0.08);
+      margin-top: 0;
+      min-height: 56px;
+      gap: 16px;
+    }
+
+    #snake-score {
+      color: #ffb86b;
+      font-size: 1.3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #snake-again {
+      font-size: 1.1rem;
+      background: #00ffcc;
+      color: #232946;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,255,204,0.10);
+      transition: background 0.2s, color 0.2s;
+      display: none; /* will be shown by JS */
+    }
+    #snake-again:hover {
+      background: #00d4ff;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -311,9 +364,9 @@
         <div class="game-status">Classic block-stacking puzzle game</div>
     </div>
 
-    <div class="game-container fade-in coming-soon" id="snake-game">
-        <h2>Snake</h2>
-        <div class="game-status">Grow longer, but don't bite yourself!</div>
+    <div class="game-container fade-in" id="snake-game">
+        <a href="#" class="button">Snake</a>
+        <div class="game-status">Classic snake game: eat, grow, avoid yourself!</div>
     </div>
 
     <div class="game-container fade-in coming-soon" id="puzzle-game">
@@ -343,6 +396,20 @@
       <span id="tetris-score">Score: 0  Round: 1</span>
     </div>
     <button id="tetris-again" style="width:100%; font-size:1.1rem; background:#232946; color:#00ffcc; border:1px solid #00ffcc; border-radius:6px; padding:8px; font-weight:bold; cursor:pointer; margin-top:8px; display:none;">Play Again</button>
+  </div>
+</div>
+
+<div id="snake-modal" style="display:none; position:fixed; z-index:3000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center;">
+  <div style="background:#232946; border-radius:16px; padding:32px 24px; width:900px; margin:auto; box-shadow:0 8px 32px rgba(0,255,204,0.25); position:relative;">
+    <button id="snake-close" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#00ffcc; font-size:2rem; cursor:pointer;">&times;</button>
+    <h2 style="color:#00ffcc; text-align:center;">Snake</h2>
+    <div class="bottom-layer">
+      <canvas id="snake-canvas"></canvas>
+      <div class="snake-controls-bar">
+        <div id="snake-score">Score: 0</div>
+        <button id="snake-again" style="display:none;">Play Again</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -381,3 +448,4 @@ document.querySelectorAll('.game-container').forEach(container => {
 
 <script src="js/wordle.js"></script>
 <script src="js/tetris.js"></script>
+<script src="snake.js"></script>
