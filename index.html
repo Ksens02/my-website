@@ -110,6 +110,7 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 40px;
+      grid-auto-rows: 1fr;
     }
     section {
       background: linear-gradient(145deg, rgba(26, 26, 43, 0.8), rgba(22, 33, 62, 0.8));
@@ -123,6 +124,9 @@
       transition: box-shadow 0.3s, transform 0.3s;
       opacity: 0;
       transform: translateY(30px);
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
     }
     section.visible {
       opacity: 1;
@@ -156,7 +160,10 @@
       overflow: hidden;
       box-shadow: 0 8px 25px rgba(0, 255, 204, 0.3);
       display: inline-block;
-      margin-top: 18px;
+      margin-top: auto;
+      margin-bottom: 0;
+      align-self: flex-start; /* or center for centering */
+      width: auto; /* ensures it doesn't stretch */
     }
     .button::before {
       content: '';
@@ -255,7 +262,9 @@
   </section>
   <section id="blog" class="fade-in">
     <h2>CTF Blog & Writeups</h2>
-    <p>I'll be posting write-ups of interesting CTF challenges I've completed. Check back soon for walkthroughs, tips, and lessons learned!</p>
+    <p>I'll be posting write-ups of interesting CTF challenges I've completed. Check back soon for walkthroughs, tips, and lessons learned! I complete the 
+      CTF challenges mainly on TryHackme.
+    </p>
     <a href="blog.html" class="button">Visit Blog</a>
   </section>
   <section class="certifications fade-in">
