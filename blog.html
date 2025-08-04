@@ -414,7 +414,7 @@
         <p>I used this command to find files using: find / -perm -4000 -type f 2>/dev/null. I got the following output:</p>
         <img src="images/mrrobot_finding_nmap.JPG" alt="Mr.Robot Finding nmap" style="max-width:100%; border:1px solid #ccc;">
         <p>If you notice "/bin/nmap". This is interesting because older nmap versions had an interactive mode. I used the following command and got the following output:</p>
-        <img src="images/mrrobot_nmap-interactive.JPG" alt="Mr.Robot Interactive" style="max-width:100%; border:1px solid #ccc;">
+        <img src="images/mrrobot_nmap_interactive.JPG" alt="Mr.Robot Interactive" style="max-width:100%; border:1px solid #ccc;">
         <p>When I press the key "h", a manual for nmap commands comes up. The most interesting one being the "!" command, which allows users to run shell commands as root.</p>
         <p>Using the "!" command with shell commands, I was able to move into /root, and concatenate key-3-of-3.txt, finishing the CTF.</p>
         <img src="images/mrrobot_done.JPG" alt="Mr.Robot Finished" style="max-width:100%; border:1px solid #ccc;">
@@ -520,4 +520,5 @@
   </script>
 </body>
 </html>
+
 
