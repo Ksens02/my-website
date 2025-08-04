@@ -392,7 +392,7 @@
         <p>Now that I have succesfully logged in to the Word Press site, I navigated to Appearance-->Editor, where I can edit one of the web pages and catch a reverse shell. I chose to do this on the Archives template.</p>
         <img src="images/mrrobot_adminpage.JPG" alt="Mr.Robot Admin page" style="max-width:100%; border:1px solid #ccc;">
         <p>To get a reverse shell, I first googled "php-reverse-shell pentest monkey", clicked on the pentest monkey github link, copied the reverse shell code, and replaced the archive template with the reverse shell.</p>
-        <img src="images/mrrobot_pentestmonkey.J{G" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
+        <img src="images/mrrobot_pentestmonkey.JPG" alt="Mr.Robot BurpSuite" style="max-width:100%; border:1px solid #ccc;">
         <p>To actually catch the shell, I used the following netcat command in terminal: nc -lvnp 1000 (which is what I set in the reverse shell</p>
         <img src="images/mrrobot_reverseshell.JPG" alt="Mr.Robot Reverse Shell" style="max-width:100%; border:1px solid #ccc;">
         <h4>Step 8: Finding Key 2</h4>
@@ -408,7 +408,7 @@
         <p>I used "-su robot", and then pasted the password into "Password:" to log in as robot.</p>
         <h4>Step 11: Actually finding Key 2</h4>
         <p>In terminal, as robot, I moved to their home directory, and then the robot directory once more. I then concatenated key-2-of-3.txt to get the following value:</p>
-        <img src="images/mrrobot_key-2-of-3.JPG" alt="Mr.Robot Key Two" style="max-width:100%; border:1px solid #ccc;">
+        <img src="images/mrobot_key-2-of-3.JPG" alt="Mr.Robot Key Two" style="max-width:100%; border:1px solid #ccc;">
         <h4>Step 12: Root Escalation</h4>
         <p>Unfortunately, robot is not authorized to commands as root user. To do this, I need to find files that run as root<./p>
         <p>I used this command to find files using: find / -perm -4000 -type f 2>/dev/null. I got the following output:</p>
@@ -520,3 +520,4 @@
   </script>
 </body>
 </html>
+
